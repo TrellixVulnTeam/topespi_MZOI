@@ -10,7 +10,7 @@
 #define ECHO	29
 
 #define SW	21
-#define TIME	100
+#define TIME	1000
 
 int change = 0;
 ///////////////////////////FUNCTION/////////////////////////////
@@ -98,14 +98,14 @@ int main(void)
 		return 1;
 	initialize();
 	
-		wiringPiISR(29, INT_EDGE_FALLING, modeChange);
+	//	wiringPiISR(29, INT_EDGE_FALLING, modeChange);
 
 	while(1)
 	{
-		delayMicroseconds(10);
+		/*delayMicroseconds(10);
 		digitalWrite(28,1);
 		delay(1);
-		/*if(change == 0)
+		if(change == 0)
 		{
 		        printf("open\n");
 			iris_open();
@@ -115,6 +115,11 @@ int main(void)
 		        printf("close\n");
 			iris_close();
 		}*/
+			iris_open();
+		delay(1000);
+			iris_close();
+		delay(1000);
+		
 	}
 
 	return 0;
