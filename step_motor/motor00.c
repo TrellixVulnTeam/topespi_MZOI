@@ -98,15 +98,13 @@ int main(void)
 		return 1;
 	initialize();
 	
-	wiringPiISR(30, INT_EDGE_RISING, modeChange());
-	digitalWrite(29, 1);
+		wiringPiISR(29, INT_EDGE_FALLING, modeChange);
 
 	while(1)
 	{
 		delayMicroseconds(10);
-		digitalWrite(29,1);
-		delayMicroseconds(10);
-		
+		digitalWrite(28,1);
+		delay(1);
 		/*if(change == 0)
 		{
 		        printf("open\n");
