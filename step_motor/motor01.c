@@ -131,14 +131,16 @@ int main(void)
 		return 1;
 	initialize();
 	softPwmCreate(PWMSET,0,200);
-
+		
+		iris_control(0,1,1,0);
+		delay(TIME);
 		//iris_open(STEPS);
-		iris_close(STEPS);
+		//iris_close(STEPS);
 	while(1)
 	{
 		
-		softPwmWrite(PWMSET,PWM1);
-		softPwmWrite(PWMSET,PWM2);
+	//	softPwmWrite(PWMSET,PWM1);
+	//	softPwmWrite(PWMSET,PWM2);
 		
 
 		/*iris_open(STEPS);
