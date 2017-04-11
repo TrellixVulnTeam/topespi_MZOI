@@ -80,8 +80,17 @@ void iris_close(void)
 void modeChange(void)
 {
 	if(change == 0)
-		change = 1 ;
-	else change = 0;
+	{
+		change = 1;
+		printf("open\n");
+		iris_open();
+	}
+	else
+	{
+ 		change = 0;
+		printf("close\n");
+		iris_close();
+	}
 }
 int main(void)
 {	
@@ -98,7 +107,7 @@ int main(void)
 		digitalWrite(29,1);
 		delayMicroseconds(10);
 		
-		if(change == 0)
+		/*if(change == 0)
 		{
 		        printf("open\n");
 			iris_open();
@@ -107,7 +116,7 @@ int main(void)
 		{
 		        printf("close\n");
 			iris_close();
-		}
+		}*/
 	}
 
 	return 0;
