@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <wiringPi.h>
 #include <softPwm.h>
+
 #define A	22
 #define AA	23
 #define B	24
@@ -11,8 +12,7 @@
 #define PWMSET	1
 #define TIME	500	
 #define STEPS	1
-int STEP_STATUS = 0;
-int ON_OFF_STATUS;      // iris_ON = 1, iris_OFF = 0;
+
 int STEP_TABLE[4][4]= { 
 			{1,0,1,0},
 			{0,1,1,0},
@@ -26,6 +26,11 @@ void initialize(void);
 void iris_reset(int a, int b, int c, int d);
 
 void iris_control(int a, int b, int c, int d);
+
+void step0(void);
+void step1(void);
+void step2(void);
+void step3(void);
 
 void iris_open(int steps);
 void iris_close(int steps);
@@ -61,45 +66,27 @@ void iris_control(int a, int b, int c, int d)
 
 void step0(void)
 {
-	digitalWrite(A,1);
-	digitalWrite(AA,0);
-	digitalWrite(B,1);
-	digitalWrite(BB,0);
-	if(ON_OFF_STATUS == 1) STEP_STATUS++;
-	else STEP_STATUS = 3;
+	iris_control(1,0,1,0);
+	delay(TIME);
 }
 
 void step1(void)
 {
-	digitalWrite(A,0);
-	digitalWrite(AA,1);
-	digitalWrite(B,1);
-	digitalWrite(BB,0);
-	if(ON_OFF_STATUS == 1) STEP_STATUS++;
-	else STEP_STATUS--;
-	
+	iris_control(0,1,1,0);
+	delay(TIME);
 }
 
 void step2(void)
 {
-	digitalWrite(A,0);
-	digitalWrite(AA,1);
-	digitalWrite(B,0);
-	digitalWrite(BB,1);
-	if(ON_OFF_STATUS == 1) STEP_STATUS++;
-	else STEP_STATUS--;
+	iris_control(0,1,0,1);
+	delay(TIME);
 }
 
 void step3(void)
 {
-	digitalWrite(A,1);
-	digitalWrite(AA,0);
-	digitalWrite(B,0);
-	digitalWrite(BB,1);
-	if(ON_OFF_STATUS == 1) STEP_STATUS = 0;
-	else STEP_STATUS = 2;
+	iris_control(1,0,0,1);
+	delay(TIME);
 }
-
 void iris_close(int steps)
 {
 	int i;
@@ -141,43 +128,20 @@ int main(void)
 		return 1;
 	initialize();
 	softPwmCreate(PWMSET,0,200);
-		
+
+		iris_open(STEPS);
+		//iris_close(STEPS);
 	while(1)
 	{
-	//	softPwmWrite(PWMSET,PWM1);
-	//	softPwmWrite(PWMSET,PWM2);
-		if(ON_OFF_STATUS == 1)
-		{
-			switch(STEP_STATUS)
-			{
-				case 0:
-					step(0);
-				case 1:
-					step(1);
-				case 2:
-					step(2);
-				case 3:
-					step(3);
-					break;
-			}
-		}
-		else
-		{
-			switch(STEP_STATUS)
-			{
-				case 3:
-					step(3);
-				case 2:
-					step(2);
-				case 1: 
-					step(1);
-				case 0:
-					step(0);
-					break;
-			}
+		
+		softPwmWrite(PWMSET,PWM1);
+		softPwmWrite(PWMSET,PWM2);
+		
 
-				
-
+		/*iris_open(STEPS);
+		delay(3000);
+		iris_close(STEPS);
+		delay(3000);*/
 	}
 	return 0;
 }
